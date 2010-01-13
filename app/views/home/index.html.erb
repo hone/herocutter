@@ -1,0 +1,76 @@
+<% content_for :fold do %>
+  <div class="count">
+    <strong><%= number_with_delimiter(@count) %> plugins</strong>
+    cut since january 2010
+  </div>
+  <div class="blurb">
+    <strong><%= link_to 'Gemcutter', 'http://www.gemcutter.org' %> for Heroku Plugins.</strong>
+    <br />Find your plugins easier, publish them faster, and have fun doing it.
+  </div>
+<% end %>
+
+<div class="border">
+  <div class="background">
+    <div class="learn">
+      <h3>learn</h3>
+      <dl>
+        <dt><%= link_to "Install RubyGems 1.3.5", page_url("download") %></dt>
+        <dd>Ruby's premier packaging system</dd>
+        <dt><%= link_to "Browse the Docs", "http://docs.rubygems.org" %></dt>
+        <dd>The comprehensive guide on RubyGems</dd>
+        <dt><%= link_to "Gem Specification", "http://docs.rubygems.org/read/chapter/20" %></dt>
+        <dd>Your gem's interface to the world</dd>
+      </dl>
+    </div>
+    <div class="share">
+      <h3>share</h3>
+      <dl>
+        <dt><code>gem install gemcutter</code></dt>
+        <dd>Provides plugins to share your code</dd>
+        <dt><code>gem build foo.gemspec</code></dt>
+        <dd>Build your gem</dd>
+        <dt><code>gem push foo-1.0.0.gem</code></dt>
+        <dd>Deploy your gem instantly</dd>
+      </dl>
+    </div>
+  </div>
+</div>
+
+<p class="pitch">
+  <strong><%= link_to "Herokutter", page_url("about") %></strong> is the Heroku community's plugin hosting service.
+  <strong><%= link_to "Instantly publish", page_url("gem_docs"), :anchor => "push" %></strong> your plugins and install them.
+  <strong><%= link_to "Use the API", page_url("api_docs") %></strong> to interact and find out more information about available gems.
+  <strong><%= link_to "Become a contributor", "http://github.com/qrush/gemcutter" %></strong> and enhance the site with your own changes.
+</p>
+<div class="leaderboards">
+  <div class="grid_3" id="new_gems">
+    <strong>New Plugins</strong>
+    <ol>
+      <% @latest.each do |rubygem| %>
+        <li>
+          <%= link_to rubygem, rubygem, :title => rubygem.versions.latest.summary %>
+        </li>
+      <% end %>
+    </ol>
+  </div>
+  <div class="grid_3" id="most_downloaded">
+    <strong>Most Downloaded</strong>
+    <ol>
+      <% @downloaded.each do |rubygem| %>
+        <li>
+          <%= link_to "#{rubygem.name} (#{rubygem.downloads})", rubygem, :title => rubygem.versions.latest.summary %>
+        </li>
+      <% end %>
+    </ol>
+  </div>
+  <div class="grid_3" id="just_updated">
+    <strong>Just Updated</strong>
+    <ol>
+      <% @updated.each do |version| %>
+        <li>
+          <%= link_to version.to_title, version.rubygem, :title => version.summary %>
+        </li>
+      <% end %>
+    </ol>
+  </div>
+</div>

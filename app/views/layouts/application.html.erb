@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <%= stylesheet_link_tag "reset", "960", "screen", "humanmsg", :cache => true %>
+    <!--[if IE 7]>
+      <%= stylesheet_link_tag "ie7" %>
+    <![endif]-->
+    <%#= render "layouts/feeds" %>
+    <title><%= page_title %></title>
+  </head>
+  <body>
+    <% flash.each do |name, msg| %>
+      <div id="flash_<%= name %>"><%= msg %></div>
+    <% end %>
+    <div class="container_12">
+      <div class="prefix_1 grid_3 header">
+        <h1><%= link_to "Herokutter", root_url, :title => "Home" %></h1>
+      </div>
+      <div class="grid_7 suffix_1 nav">
+        <ul>
+          <% if signed_in? %>
+            <li><%= link_to(image_tag(current_user.gravatar_url(:size => 24)), profile_url, :id => "user_gravatar") %></li>
+            <li><%= link_to truncate(current_user.name), profile_url %></li>
+          <% end %>
+          <li>all gems</li>
+          <% if signed_in? %>
+            <li><%= link_to "logout", sign_out_path %></li>
+          <% else %>
+            <li><%= link_to "sign in", sign_in_path %></li>
+            <li><%= link_to "sign up", sign_up_path %></li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="prefix_1 grid_10 suffix_1 main">
+        <% if content_for?(:fold) %>
+          <div class="fold">
+            <%= yield :fold %>
+          </div>
+        <% end %>
+        <div class="info">
+          <% if @title %>
+            <h2><%= link_to @title, "" %></h2>
+          <% end %>
+          <% if @subtitle %>
+            <h3><%= @subtitle %></h3>
+          <% end %>
+          <%= yield %>
+        </div>
+      </div>
+      <div class="prefix_1 grid_10 suffix_1 footer">
+        <div class="links">
+          <%= link_to "About", page_url("about") %>
+          <%= link_to "Docs", page_url("docs") %>
+          <%= link_to "FAQ", page_url("faq") %>
+          <%= link_to "Code", "http://github.com/hone/herokutter" %>
+          <%= link_to "Blog", "http://hone.heroku.com/herokutter" %>
+          <%= link_to "original design by #{image_tag('thoughtbot.png')}", "http://thoughtbot.com", :title => "Original Design by Thoughtbot", :id => "thoughtbot" %>
+          <%= link_to "hosted on #{image_tag('heroku.png')}", "http://heroku.com", :title => "Hosted by Heroku", :id => "thoughtbot" %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

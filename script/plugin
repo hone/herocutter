@@ -1,3 +1,3 @@
 #!/usr/bin/env ruby
-require File.expand_path('../../config/boot',  __FILE__)
-require 'commands/plugin'
+require File.dirname(__FILE__) + '/../config/boot'
+require 'vendor/plugins/tracked_plugins/lib/tracked_plugins'
