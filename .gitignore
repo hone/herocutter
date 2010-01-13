@@ -1,3 +1,4 @@
 config/database.yml
 tmp/*
 log/*
+rerun.txt
