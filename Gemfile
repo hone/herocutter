@@ -1,9 +1,10 @@
 disable_system_gems
 bundle_path "vendor/bundler_gems"
 
-gem 'rails',     '2.3.5'
+gem 'rails',      '2.3.5'
 gem 'postgres'
-gem 'clearance', '0.8.4'
+gem 'clearance',  '0.8.4'
+gem 'gravtastic', '2.2.0'
 
 only :test do
   gem 'factory_girl',     '1.2.3'
