@@ -20,8 +20,8 @@
       <div class="grid_7 suffix_1 nav">
         <ul>
           <% if signed_in? %>
-            <li><%= link_to(image_tag(current_user.gravatar_url(:size => 24)), profile_url, :id => "user_gravatar") %></li>
-            <li><%= link_to truncate(current_user.name), profile_url %></li>
+            <li><%= image_tag(current_user.gravatar_url(:size => 24)) %></li>
+            <li><%= truncate(current_user.email) %></li>
           <% end %>
           <li>all gems</li>
           <% if signed_in? %>
