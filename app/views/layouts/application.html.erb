@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <%= stylesheet_link_tag "reset", "960", "screen", "humanmsg", :cache => true %>
+    <%= stylesheet_link_tag "reset", "960", "screen", "humanmsg", "formtastic", "formtastic_changes", :cache => true %>
     <!--[if IE 7]>
       <%= stylesheet_link_tag "ie7" %>
     <![endif]-->
@@ -25,6 +25,7 @@
           <% end %>
           <li>all gems</li>
           <% if signed_in? %>
+            <li><%= link_to "new plugin", new_plugin_path %></li>
             <li><%= link_to "logout", sign_out_path %></li>
           <% else %>
             <li><%= link_to "sign in", sign_in_path %></li>

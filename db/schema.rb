@@ -9,7 +9,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100113022933) do
+ActiveRecord::Schema.define(:version => 20100114044215) do
+
+  create_table "plugin_ownerships", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "plugin_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "plugins", :force => true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "uri"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "handle"

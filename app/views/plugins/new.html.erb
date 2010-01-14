@@ -1,0 +1,10 @@
+<% semantic_form_for @plugin do |form| %>
+  <% form.inputs do %>
+    <%= form.input :name %>
+    <%= form.input :uri %>
+    <%= form.input :description, :as => :text, :required => false %>
+  <% end %>
+  <% form.buttons do %>
+    <%= form.commit_button "Cut" %>
+  <% end %>
+<% end %>

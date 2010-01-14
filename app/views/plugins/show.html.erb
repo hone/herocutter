@@ -1,0 +1,40 @@
+<% @title = @plugin.name %>
+<% @subtitle = @latest_version.try(:slug) %>
+ 
+<div id="admin">
+  <%= link_to "Edit", edit_plugin_path(@plugin), :id => "edit" if @plugin.owned_by?(current_user) %>
+</div>
+
+<div id="markup">
+  <p><%= @latest_version.try(:info) %></p>
+</div>
+
+<div class="border">
+  <%= clippy(@latest_version.try(:to_install)) %>
+  <div class="install">
+    <div class="instructions"><strong>install</strong><span><%= install_instructions(@plugin) %></span></div>
+  </div>
+</div>
+
+<div class="border">
+  <div class="meta">
+    <div class="top">
+      <div class="authors">
+        <h5>Authors</h5>
+        <p><%=h authors(@plugin) %></p>
+      </div>
+
+      <div class="downloads">
+        <strong><%= number_with_delimiter(0) %></strong> total downloads
+      </div>
+      <div class="downloads">
+        <strong><%= number_with_delimiter(@latest_version.try(:downloads_count) || 0) %></strong> for this version
+      </div>
+    </div>
+
+    <div class="links">
+      <h5>Links</h5>
+      <%= link_to 'Git URI', @plugin.uri %>
+    </div>
+  </div>
+</div>

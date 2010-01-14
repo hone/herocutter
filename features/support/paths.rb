@@ -12,6 +12,9 @@ module NavigationHelpers
       new_password_path
     
     # Add more page name => path mappings here
+    when /the plugin page for "([^\"]+)"/
+      plugin = Plugin.find_by_name!($1)
+      plugin_path(plugin)
     
     else
       raise "Can't find mapping from \"#{page_name}\" to a path."
