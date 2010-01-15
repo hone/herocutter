@@ -108,6 +108,19 @@ class PluginsControllerTest < ActionController::TestCase
           assert_equal @new_uri, assigns(:plugin).uri
         end
       end
+
+      context "with plugin problems" do
+        setup do
+          @plugin = Factory.stub(:plugin)
+          stub(Plugin).find_by_id(@plugin.id.to_s) { @plugin }
+          stub(@plugin).update_attributes { false }
+          put :update, :id => @plugin.id
+        end
+
+        should_respond_with :success
+        should_render_template :edit
+        should_assign_to(:plugin) { @plugin }
+      end
     end
   end
 

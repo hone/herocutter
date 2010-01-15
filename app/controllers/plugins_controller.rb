@@ -29,9 +29,12 @@ class PluginsController < ApplicationController
   end
 
   def update
-    @plugin.update_attributes(params[:plugin])
-    flash[:success] = "Plugin updated."
-    redirect_to plugin_path(@plugin)
+    if @plugin.update_attributes(params[:plugin])
+      flash[:success] = "Plugin updated."
+      redirect_to plugin_path(@plugin)
+    else
+      render :edit
+    end
   end
 
   private
