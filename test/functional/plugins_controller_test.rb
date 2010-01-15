@@ -149,5 +149,15 @@ class PluginsControllerTest < ActionController::TestCase
       should_respond_with :redirect
       should_redirect_to('the homepage') { root_url }
     end
+
+    context "on PUT update" do
+      setup do
+        @plugin = Factory(:plugin)
+        put :update, :id => @plugin.id
+      end
+
+      should_respond_with :redirect
+      should_redirect_to('the hompage') { root_url }
+    end
   end
 end
