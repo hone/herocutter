@@ -18,7 +18,7 @@ class PluginsController < ApplicationController
 
       redirect_to plugin_path(@plugin)
     rescue ActiveRecord::RecordInvalid => e
-      render :action => :new
+      render :new
     end
   end
 
