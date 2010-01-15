@@ -48,8 +48,8 @@ class PluginsControllerTest < ActionController::TestCase
           should_respond_with :success
           should_render_template :new
           should_assign_to :plugin, :class => Plugin
-          should_not_change "Plugin.count"
-          should_not_change "PluginOwnership.count"
+          should_not_change("Plugin count") { Plugin.count }
+          should_not_change("PluginOwnership count") { PluginOwnership.count }
         end
 
         context "with PluginOwnership" do
@@ -62,8 +62,8 @@ class PluginsControllerTest < ActionController::TestCase
           should_render_template :new
           should_assign_to :plugin, :class => Plugin
           should_assign_to :plugin_ownership, :class => PluginOwnership
-          should_not_change "Plugin.count"
-          should_not_change "PluginOwnership.count"
+          should_not_change("Plugin count") { Plugin.count }
+          should_not_change("PluginOwnership count") { PluginOwnership.count }
         end
       end
     end
