@@ -39,6 +39,10 @@ class PluginTest < ActiveSupport::TestCase
         PluginOwnership.create(:plugin => @plugin, :user => @user)
         assert @plugin.owned_by?(@user)
       end
+
+      should "can not be owned by nil" do
+        assert !@plugin.owned_by?(nil)
+      end
     end
   end
 end
