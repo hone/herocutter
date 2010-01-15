@@ -2,3 +2,5 @@ config/database.yml
 tmp/*
 log/*
 rerun.txt
+vendor/bundler_gems/*
+bin/*
