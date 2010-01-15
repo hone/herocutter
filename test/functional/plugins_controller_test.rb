@@ -79,6 +79,36 @@ class PluginsControllerTest < ActionController::TestCase
       should_assign_to(:plugin) { @plugin }
     end
 
+    context "on GET edit" do
+      setup do
+        @plugin = Factory(:plugin)
+        get :edit, :id => @plugin.id
+      end
+
+      should_respond_with :success
+      should_render_template :edit
+      should_assign_to(:plugin) { @plugin }
+    end
+
+    context "on PUT update" do
+      setup do
+        @plugin = Factory(:plugin)
+      end
+
+      context "with valid data" do
+        setup do
+          @new_uri = "git://github.com/new_uri.git"
+          put :update, { :id => @plugin.id, :plugin => {:uri => @new_uri } }
+        end
+
+        should_respond_with :redirect
+        should_redirect_to('the show plugin page') { plugin_path(@plugin) }
+        should_assign_to(:plugin) { @plugin }
+        should "change the uri of the plugin" do
+          assert_equal @new_uri, assigns(:plugin).uri
+        end
+      end
+    end
   end
 
   context "without being logged in" do
@@ -104,6 +134,16 @@ class PluginsControllerTest < ActionController::TestCase
       setup do
         @plugin = Factory(:plugin)
         get :show, :id => @plugin.id
+      end
+
+      should_respond_with :redirect
+      should_redirect_to('the homepage') { root_url }
+    end
+
+    context "on GET edit" do
+      setup do
+        @plugin = Factory(:plugin)
+        get :edit, :id => @plugin.id
       end
 
       should_respond_with :redirect
