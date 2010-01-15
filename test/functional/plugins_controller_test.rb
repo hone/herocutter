@@ -68,17 +68,6 @@ class PluginsControllerTest < ActionController::TestCase
       end
     end
 
-    context "on GET show" do
-      setup do
-        @plugin = Factory(:plugin)
-        get :show, :id => @plugin.id
-      end
-
-      should_respond_with :success
-      should_render_template :show
-      should_assign_to(:plugin) { @plugin }
-    end
-
     context "on GET edit" do
       setup do
         @plugin = Factory(:plugin)
@@ -160,8 +149,9 @@ class PluginsControllerTest < ActionController::TestCase
         get :show, :id => @plugin.id
       end
 
-      should_respond_with :redirect
-      should_redirect_to('the homepage') { root_url }
+      should_respond_with :success
+      should_render_template :show
+      should_assign_to(:plugin) { @plugin }
     end
 
     context "on GET edit" do
