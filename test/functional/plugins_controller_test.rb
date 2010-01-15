@@ -18,9 +18,13 @@ class PluginsControllerTest < ActionController::TestCase
     end
 
     context "on POST create" do
+      setup do
+        @plugin_params = {:name => "new_plugin", :uri => "git://github.com/justinfrench/formtastic.git" }
+      end
+
       context "with valid data" do
         setup do
-          post :create, :plugin => {:name => "New Plugin", :uri => "git://github.com/justinfrench/formtastic.git" }
+          post :create, :plugin => @plugin_params
         end
 
         should_create :plugin
@@ -30,6 +34,36 @@ class PluginsControllerTest < ActionController::TestCase
 
         should "have the logged in user own the plugin" do
           assert_equal @user, assigns(:plugin_ownership).user
+        end
+      end
+
+      context "with problems" do
+
+        context "with plugin data" do
+          setup do
+            stub.instance_of(Plugin).save! { raise ActiveRecord::RecordInvalid.new(Plugin.new) }
+            post :create, :plugin => @plugin_params
+          end
+
+          should_respond_with :success
+          should_render_template :new
+          should_assign_to :plugin, :class => Plugin
+          should_not_change "Plugin.count"
+          should_not_change "PluginOwnership.count"
+        end
+
+        context "with PluginOwnership" do
+          setup do
+            stub.instance_of(PluginOwnership).save! { raise ActiveRecord::RecordInvalid.new(PluginOwnership.new) }
+            post :create, :plugin => @plugin_params
+          end
+
+          should_respond_with :success
+          should_render_template :new
+          should_assign_to :plugin, :class => Plugin
+          should_assign_to :plugin_ownership, :class => PluginOwnership
+          should_not_change "Plugin.count"
+          should_not_change "PluginOwnership.count"
         end
       end
     end

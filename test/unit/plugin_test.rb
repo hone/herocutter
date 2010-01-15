@@ -8,10 +8,12 @@ class PluginTest < ActiveSupport::TestCase
     subject { @plugin }
 
     should_have_many :plugin_ownerships
-    should_have_many :users
+    should_have_many :owners, :through => :plugin_ownerships
 
     should_validate_presence_of :name
     should_validate_presence_of :uri
+    should_not_allow_values_for :name, "New Plugin", "-newplugin", "_newplugin", "newplugin-", "newplugin_"
+    should_allow_values_for :name, "new_plugin", "new-plugin", "newplugin", "1newplugin", "newplugin1"
 
     context "with an existing plugin" do
       setup do

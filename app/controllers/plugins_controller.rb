@@ -7,9 +7,18 @@ class PluginsController < ApplicationController
 
   def create
     @plugin = Plugin.new(params[:plugin])
-    @plugin.save
-    @plugin_ownership = @plugin.plugin_ownerships.create(:user => current_user)
-    redirect_to plugin_path(@plugin)
+
+    begin
+      ActiveRecord::Base.transaction do
+        @plugin.save!
+        @plugin_ownership = @plugin.plugin_ownerships.build(:user => current_user)
+        @plugin_ownership.save!
+      end
+
+      redirect_to plugin_path(@plugin)
+    rescue ActiveRecord::RecordInvalid => e
+      render :action => :new
+    end
   end
 
   def show
