@@ -36,7 +36,7 @@ ActionController::Routing::Routes.draw do |map|
   # See how all your routes lay out with "rake routes"
 
   map.resources :plugins,
-    :only => [:new, :create, :show, :edit, :update]
+    :only => [:index, :new, :create, :show, :edit, :update]
   map.root :controller => 'home'
   map.resources :pages,
     :controller => 'pages',

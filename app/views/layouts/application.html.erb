@@ -23,7 +23,7 @@
             <li><%= image_tag(current_user.gravatar_url(:size => 24)) %></li>
             <li><%= truncate(current_user.email) %></li>
           <% end %>
-          <li>all gems</li>
+          <li><%= link_to "all plugins", plugins_path %></li>
           <% if signed_in? %>
             <li><%= link_to "new plugin", new_plugin_path %></li>
             <li><%= link_to "logout", sign_out_path %></li>

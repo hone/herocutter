@@ -1,6 +1,10 @@
 class PluginsController < ApplicationController
-  before_filter :redirect_to_root, :unless => :signed_in?
+  before_filter :redirect_to_root, :unless => :signed_in?, :except => [:index, :show]
   before_filter :find_plugin, :only => [:show, :edit, :update]
+
+  def index
+    @plugins = Plugin.find(:all, :order => "name ASC")
+  end
 
   def new
     @plugin = Plugin.new

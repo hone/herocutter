@@ -125,6 +125,17 @@ class PluginsControllerTest < ActionController::TestCase
   end
 
   context "without being logged in" do
+    context "on GET index" do
+      setup do
+        @plugins = Array(1..3).collect { Factory(:plugin) }
+        get :index
+      end
+
+      should_respond_with :success
+      should_render_template :index
+      should_assign_to(:plugins) { @plugins }
+    end
+
     context "on GET new" do
       setup do
         get :new

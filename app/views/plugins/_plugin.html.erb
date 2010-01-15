@@ -1,0 +1,10 @@
+<li>
+  <div class="downloads">
+    <strong>0</strong>
+    downloads
+  </div>
+  <a href="<%= plugin_path(plugin) %>">
+    <strong><%= plugin.name %></strong>
+    <%=h truncate(plugin.description, :length => 100) %>
+  </a>
+</li>

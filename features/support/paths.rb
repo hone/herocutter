@@ -12,6 +12,8 @@ module NavigationHelpers
       new_password_path
     
     # Add more page name => path mappings here
+    when /the plugins listing page/
+      plugins_path
     when /the new plugin page/
       new_plugin_path
     when /the plugin page for "([^\"]+)"/
