@@ -21,4 +21,4 @@ Feature: Add Plugin
     When I fill in "Name" with "New Plugin"
     And I fill in "Git URI" with "git://github.com/person/new_plugin.git"
     And I press "Cut"
-    Then I should see "is invalid"
+    Then I should see "Name is invalid"
