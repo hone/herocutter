@@ -1,10 +1,17 @@
-<% semantic_form_for @plugin do |form| %>
-  <% form.inputs do %>
-    <%= form.input :name %>
-    <%= form.input :uri %>
-    <%= form.input :description, :as => :text, :required => false %>
-  <% end %>
-  <% form.buttons do %>
-    <%= form.commit_button "Cut" %>
-  <% end %>
+<% @title = "new plugin" %>
+<%= error_messages_for :plugin %>
+<%- form_for @plugin do |form| %>
+  <div class="url_field">
+    <%= form.label :name, "Name" %>
+    <%= form.text_field :name %>
+  </div>
+  <div class="url_field">
+    <%= form.label :uri, "Git URI" %>
+    <%= form.text_field :uri %>
+  </div>
+  <div class="url_field">
+    <%= form.label :description, "Description" %>
+    <%= form.text_field :description %>
+  </div>
+  <%= form.submit 'Cut' %>
 <% end %>
