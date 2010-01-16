@@ -19,6 +19,8 @@ module NavigationHelpers
     when /the plugin page for "([^\"]+)"/
       plugin = Plugin.find_by_name!($1)
       plugin_path(plugin)
+    when /the profile page/
+      profile_path
     else
       raise "Can't find mapping from \"#{page_name}\" to a path."
     end

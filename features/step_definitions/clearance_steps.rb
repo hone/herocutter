@@ -94,9 +94,11 @@ When /^I sign in as "(.*)\/(.*)"$/ do |email, password|
   And %{I fill in "Email" with "#{email}"}
   And %{I fill in "Password" with "#{password}"}
   And %{I press "Sign In"}
+  @me = User.find_by_email(email)
 end
 
 When /^I sign out$/ do
+  @me = nil
   visit '/session', :delete
 end
 

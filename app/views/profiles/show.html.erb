@@ -1,0 +1,9 @@
+<h3>Your Profile</h3>
+ 
+<p>Your Gravatar: <%= image_tag @user.gravatar_url(:size => 60), :id => 'profile_gravatar' %> (change it at <%= link_to 'gravatar.com', 'http://www.gravatar.com' %>)</p>
+ 
+<p>Your API key is <strong><%= @user.api_key %></strong>. <br />
+Your <code>~/.heroku/herocutter</code> file should look like this to use the <%= link_to "plugin commands", page_url("gem_docs") %>:</p>
+ 
+<pre><code>---
+:herocutter_api_key: <%= @user.api_key %></code></pre>

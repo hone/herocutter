@@ -21,7 +21,7 @@
         <ul>
           <% if signed_in? %>
             <li><%= image_tag(current_user.gravatar_url(:size => 24)) %></li>
-            <li><%= truncate(current_user.email) %></li>
+            <li><%= link_to truncate(current_user.email), profile_path %></li>
           <% end %>
           <li><%= link_to "all plugins", plugins_path %></li>
           <% if signed_in? %>
