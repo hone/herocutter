@@ -7,7 +7,6 @@ gem 'gravtastic', '2.2.0'
 gem 'formtastic', '0.9.7'
 
 only :test do
-  disable_system_gems
   gem 'factory_girl',     '1.2.3'
   gem 'cucumber',         '0.6.1'
   gem 'cucumber-rails',   '0.2.3'
@@ -19,6 +18,5 @@ only :test do
 end
 
 only :development do
-  disable_system_gems
   gem 'factory_girl',     '1.2.3'
 end
