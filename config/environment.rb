@@ -41,4 +41,4 @@ Rails::Initializer.run do |config|
 end
 
 # Clearance
-DO_NOT_REPLY = 'herokutter@hone.otherinbox.com'
+DO_NOT_REPLY = 'herocutter@hone.otherinbox.com'

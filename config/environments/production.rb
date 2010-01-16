@@ -28,4 +28,4 @@ config.action_view.cache_template_loading            = true
 # config.threadsafe!
 
 # Clearance
-HOST = 'herokutter.heroku.com'
+HOST = 'herocutter.heroku.com'

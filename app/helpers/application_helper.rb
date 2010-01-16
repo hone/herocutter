@@ -7,6 +7,6 @@ module ApplicationHelper
   end
 
   def page_title
-    "herokutter"
+    "herocutter"
   end
 end
