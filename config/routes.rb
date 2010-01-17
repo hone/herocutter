@@ -35,7 +35,9 @@ ActionController::Routing::Routes.draw do |map|
 
   # See how all your routes lay out with "rake routes"
 
-  map.resource :profile
+  map.resource :profile,
+    :only   => [:show],
+    :member => {:reset_api_key => :put }
   map.resources :plugins,
     :only => [:index, :new, :create, :show, :edit, :update]
   map.root :controller => 'home'

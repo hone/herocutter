@@ -23,6 +23,14 @@ class UserTest < ActiveSupport::TestCase
         should "be 32bit hexadecimal" do
           assert /^[a-f0-9]{32}$/.match(@user.api_key)
         end
+
+        context "gets reset which" do
+          setup do
+            @user.reset_api_key!
+          end
+
+          should_change("the api key") { @user.api_key }
+        end
       end
     end
   end

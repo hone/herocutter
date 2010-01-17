@@ -7,3 +7,6 @@ Your <code>~/.heroku/herocutter</code> file should look like this to use the <%=
  
 <pre><code>---
 :herocutter_api_key: <%= @user.api_key %></code></pre>
+
+<p><%= button_to "Reset my API key", reset_api_key_profile_path,
+        :method => :put, :confirm => "Are you sure? This cannot be undone." %></p>
