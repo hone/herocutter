@@ -12,8 +12,8 @@ class PluginTest < ActiveSupport::TestCase
 
     should_validate_presence_of :name
     should_validate_presence_of :uri
-    should_not_allow_values_for :name, "New Plugin", "-newplugin", "_newplugin", "newplugin-", "newplugin_"
-    should_allow_values_for :name, "new_plugin", "new-plugin", "newplugin", "1newplugin", "newplugin1"
+    should_not_allow_values_for :name, "New Plugin", "-newplugin", "_newplugin", "newplugin-", "newplugin_", "1", "1newplugin"
+    should_allow_values_for :name, "new_plugin", "new-plugin", "newplugin", "newplugin", "newplugin1"
 
     context "with an existing plugin" do
       setup do

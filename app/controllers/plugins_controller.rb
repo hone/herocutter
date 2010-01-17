@@ -1,6 +1,6 @@
 class PluginsController < ApplicationController
   before_filter :redirect_to_root, :unless => :signed_in?, :except => [:index, :show]
-  before_filter :find_plugin, :only => [:show, :edit, :update]
+  before_filter :find_plugin, :only => [:edit, :update]
 
   def index
     @plugins = Plugin.find(:all, :order => "name ASC")
@@ -27,6 +27,17 @@ class PluginsController < ApplicationController
   end
 
   def show
+    find_plugin_by_name_or_id(params[:id])
+    if @plugin
+      respond_to do |format|
+        format.html
+        format.json do
+          render :json => @plugin.to_json
+        end
+      end
+    else
+      render :no_plugin_found
+    end
   end
 
   def edit
@@ -44,5 +55,9 @@ class PluginsController < ApplicationController
   private
   def find_plugin
     @plugin = Plugin.find_by_id(params[:id])
+  end
+
+  def find_plugin_by_name_or_id(id)
+    @plugin = (Plugin.find_by_name(params[:id]) or Plugin.find_by_id(params[:id]))
   end
 end

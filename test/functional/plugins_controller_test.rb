@@ -143,15 +143,54 @@ class PluginsControllerTest < ActionController::TestCase
       should_redirect_to('the hompage') { root_url }
     end
 
-    context "on GET show" do
+    context "when plugin exists" do
       setup do
         @plugin = Factory(:plugin)
-        get :show, :id => @plugin.id
       end
 
-      should_respond_with :success
-      should_render_template :show
-      should_assign_to(:plugin) { @plugin }
+      context "on GET show by id" do
+        setup do
+          get :show, :id => @plugin.id
+        end
+
+        should_respond_with :success
+        should_render_template :show
+        should_assign_to(:plugin) { @plugin }
+      end
+
+      context "on GET show by name" do
+        setup do
+          get :show, :id => @plugin.name
+        end
+
+        should_respond_with :success
+        should_render_template :show
+        should_assign_to(:plugin) { @plugin }
+      end
+
+      context "on GET show in JSON" do
+        setup do
+          get :show, :id => @plugin.id, :format => 'json'
+        end
+
+        should_respond_with :success
+        should_assign_to(:plugin) { @plugin }
+        should_respond_with_content_type :json
+        should "render json" do
+          assert_equal @plugin.to_json, @response.body
+        end
+      end
+    end
+
+    context "when plugin doesn't exist" do
+      context "on GET show" do
+        setup do
+          get :show, :id => 5
+        end
+
+        should_respond_with :success
+        should_render_template :no_plugin_found
+      end
     end
 
     context "on GET edit" do
