@@ -200,6 +200,19 @@ class PluginsControllerTest < ActionController::TestCase
         should_respond_with :success
         should_render_template :no_plugin_found
       end
+
+      context "on GET show in JSON" do
+        setup do
+          get :show, :id => 5, :format => 'json'
+        end
+
+        should_respond_with :success
+        should_render_template :no_plugin_found
+        should_respond_with_content_type :json
+        should "be correct JSON" do
+          assert JSON.parse(@response.body)
+        end
+      end
     end
 
     context "on GET edit" do
