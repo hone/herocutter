@@ -58,6 +58,6 @@ class PluginsController < ApplicationController
   end
 
   def find_plugin_by_name_or_id(id)
-    @plugin = (Plugin.find_by_name(params[:id]) or Plugin.find_by_id(params[:id]))
+    @plugin = (Plugin.find_by_name(params[:id]) or Plugin.find_by_id(params[:id].to_i))
   end
 end

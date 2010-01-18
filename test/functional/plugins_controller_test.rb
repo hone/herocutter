@@ -183,9 +183,18 @@ class PluginsControllerTest < ActionController::TestCase
     end
 
     context "when plugin doesn't exist" do
-      context "on GET show" do
+      context "on GET show by id" do
         setup do
           get :show, :id => 5
+        end
+
+        should_respond_with :success
+        should_render_template :no_plugin_found
+      end
+
+      context "on GET show by name" do
+        setup do
+          get :show, :id => "foo"
         end
 
         should_respond_with :success
