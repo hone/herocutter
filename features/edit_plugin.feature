@@ -5,8 +5,8 @@ Feature: Edit Plugin
 
   Background:
     Given I am signed up and confirmed as "email@person.com/password"
-    And I have a plugin "old_plugin"
     And I sign in as "email@person.com/password"
+    And I have a plugin "old_plugin"
     When I go to the plugin page for "old_plugin"
     And I follow "Edit"
 

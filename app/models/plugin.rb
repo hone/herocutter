@@ -15,4 +15,9 @@ class Plugin < ActiveRecord::Base
       false
     end
   end
+
+  def self.parse_name(uri)
+    uri = URI.parse(uri)
+    uri.try(:path).try(:split, '/').try(:last).try(:split, '.').try(:first)
+  end
 end

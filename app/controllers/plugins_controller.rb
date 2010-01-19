@@ -1,5 +1,7 @@
 class PluginsController < ApplicationController
-  before_filter :redirect_to_root, :unless => :signed_in?, :except => [:index, :show]
+  before_filter :redirect_to_root, :unless => :signed_in?, :only => [:new, :edit, :update]
+  # rails won't allow you to have two before_filters with the same method name
+  before_filter :redirect_to_root_for_create, :unless => :signed_in_or_has_api_key?, :only => [:create]
   before_filter :find_plugin, :only => [:edit, :update]
 
   def index
@@ -12,17 +14,34 @@ class PluginsController < ApplicationController
 
   def create
     @plugin = Plugin.new(params[:plugin])
+    if @plugin.name.blank?
+      @plugin.name = Plugin.parse_name(@plugin.uri)
+    end
 
     begin
       ActiveRecord::Base.transaction do
         @plugin.save!
-        @plugin_ownership = @plugin.plugin_ownerships.build(:user => current_user)
+        @plugin_ownership = @plugin.plugin_ownerships.build(:user => @user)
         @plugin_ownership.save!
       end
 
-      redirect_to plugin_path(@plugin)
+      respond_to do |format|
+        format.html do
+          redirect_to plugin_path(@plugin)
+        end
+        format.json do
+          redirect_to plugin_path(@plugin, :format => 'json')
+        end
+      end
     rescue ActiveRecord::RecordInvalid => e
-      render :new
+      respond_to do |format|
+        format.html do
+          render :new
+        end
+        format.json do
+          render :could_not_create_plugin
+        end
+      end
     end
   end
 
@@ -55,6 +74,18 @@ class PluginsController < ApplicationController
   private
   def find_plugin
     @plugin = Plugin.find_by_id(params[:id])
+  end
+
+  def signed_in_or_has_api_key?
+   if signed_in?
+     @user = current_user
+   elsif User.find_by_api_key(params[:api_key])
+     @user = User.find_by_api_key(params[:api_key])
+   end
+  end
+
+  def redirect_to_root_for_create
+    redirect_to_root
   end
 
   def find_plugin_by_name_or_id(id)

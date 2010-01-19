@@ -45,4 +45,38 @@ class PluginTest < ActiveSupport::TestCase
       end
     end
   end
+
+  context "class methods" do
+    context "such as parse_name" do
+      context "when given the uri with the name following the host" do
+        setup do
+          @uri = "git://github.com/new_plugin.git"
+        end
+
+        should "return the name" do
+          assert_equal 'new_plugin', Plugin.parse_name(@uri)
+        end
+      end
+
+      context "when given the uri with the name separated from the hsot" do
+        setup do
+          @uri = "git://github.com/hone/new_plugin.git"
+        end
+
+        should "return the name" do
+          assert_equal "new_plugin", Plugin.parse_name(@uri)
+        end
+      end
+
+      context "when given a blank uri" do
+        setup do
+          @uri = ""
+        end
+
+        should "return nil" do
+          assert Plugin.parse_name(@uri).nil?
+        end
+      end
+    end
+  end
 end
