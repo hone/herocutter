@@ -31,7 +31,7 @@ class PluginsController < ApplicationController
           redirect_to plugin_path(@plugin)
         end
         format.json do
-          redirect_to plugin_path(@plugin, :format => 'json')
+          render :json => @plugin.to_json
         end
       end
     rescue ActiveRecord::RecordInvalid, URI::InvalidURIError => e

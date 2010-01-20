@@ -282,13 +282,15 @@ class PluginsControllerTest < ActionController::TestCase
           post :create, :api_key => @user.api_key, :plugin => {:uri => 'git://github.com/new_plugin.git'}, :format => 'json'
         end
 
-        should_respond_with :redirect
-        should_redirect_to('the show plugin page') { plugin_path(assigns(:plugin), :format => 'json') }
-        should_assign_to(:user) { @user }
+        should_respond_with :success
+        should_respond_with_content_type :json
         should_create :plugin
         should_create :plugin_ownership
         before_should "not verify authenticity token" do
           dont_allow(@controller).verify_authenticity_token
+        end
+        should "render plugin as json object" do
+          assert_equal assigns(:plugin).to_json, @response.body
         end
       end
     end
