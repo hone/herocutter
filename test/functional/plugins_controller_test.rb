@@ -264,6 +264,9 @@ class PluginsControllerTest < ActionController::TestCase
         should_assign_to(:user) { @user }
         should_create :plugin
         should_create :plugin_ownership
+        before_should "not verify authenticity token" do
+          dont_allow(@controller).verify_authenticity_token
+        end
       end
     end
   end

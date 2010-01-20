@@ -1,4 +1,5 @@
 class PluginsController < ApplicationController
+  skip_before_filter :verify_authenticity_token, :if => :has_api_key?, :only => [:create]
   before_filter :redirect_to_root, :unless => :signed_in?, :only => [:new, :edit, :update]
   # rails won't allow you to have two before_filters with the same method name
   before_filter :redirect_to_root_for_create, :unless => :signed_in_or_has_api_key?, :only => [:create]
@@ -77,11 +78,16 @@ class PluginsController < ApplicationController
   end
 
   def signed_in_or_has_api_key?
+    user = has_api_key?
    if signed_in?
      @user = current_user
-   elsif User.find_by_api_key(params[:api_key])
+   elsif has_api_key?
      @user = User.find_by_api_key(params[:api_key])
    end
+  end
+
+  def has_api_key?
+    User.find_by_api_key(params[:api_key])
   end
 
   def redirect_to_root_for_create
