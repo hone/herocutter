@@ -39,6 +39,17 @@ class PluginsControllerTest < ActionController::TestCase
       end
 
       context "with problems" do
+        context "with URI parse" do
+          setup do
+            post :create
+          end
+
+          should_respond_with :success
+          should_render_template :new
+          should_assign_to :plugin, :class => Plugin
+          should_not_change("Plugin count") { Plugin.count }
+          should_not_change("PluginOwnership count") { PluginOwnership.count }
+        end
 
         context "with plugin data" do
           setup do
@@ -155,6 +166,18 @@ class PluginsControllerTest < ActionController::TestCase
 
       should_respond_with :redirect
       should_redirect_to('the hompage') { root_url }
+    end
+
+    context "on POST create with json" do
+      setup do
+        post :create, :format => 'json'
+      end
+
+      should_respond_with :success
+      should_respond_with_content_type :json
+      should_not_change("Plugin count") { Plugin.count }
+      should_not_change("PluginOwnership count") { PluginOwnership.count }
+      should_render_template :could_not_create_plugin
     end
 
     context "when plugin exists" do

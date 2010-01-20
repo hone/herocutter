@@ -2,7 +2,7 @@ class PluginsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :if => :has_api_key?, :only => [:create]
   before_filter :redirect_to_root, :unless => :signed_in?, :only => [:new, :edit, :update]
   # rails won't allow you to have two before_filters with the same method name
-  before_filter :redirect_to_root_for_create, :unless => :signed_in_or_has_api_key?, :only => [:create]
+  before_filter :redirect_to_root_for_create, :only => [:create]
   before_filter :find_plugin, :only => [:edit, :update]
 
   def index
@@ -14,12 +14,12 @@ class PluginsController < ApplicationController
   end
 
   def create
-    @plugin = Plugin.new(params[:plugin])
-    if @plugin.name.blank?
-      @plugin.name = Plugin.parse_name(@plugin.uri)
-    end
-
     begin
+      @plugin = Plugin.new(params[:plugin])
+      if @plugin.name.blank?
+        @plugin.name = Plugin.parse_name(@plugin.uri)
+      end
+
       ActiveRecord::Base.transaction do
         @plugin.save!
         @plugin_ownership = @plugin.plugin_ownerships.build(:user => @user)
@@ -34,7 +34,7 @@ class PluginsController < ApplicationController
           redirect_to plugin_path(@plugin, :format => 'json')
         end
       end
-    rescue ActiveRecord::RecordInvalid => e
+    rescue ActiveRecord::RecordInvalid, URI::InvalidURIError => e
       respond_to do |format|
         format.html do
           render :new
@@ -91,7 +91,9 @@ class PluginsController < ApplicationController
   end
 
   def redirect_to_root_for_create
-    redirect_to_root
+    if not signed_in_or_has_api_key? and not request.format.to_sym == :json
+      redirect_to_root
+    end
   end
 
   def find_plugin_by_name_or_id(id)
