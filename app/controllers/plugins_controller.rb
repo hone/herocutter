@@ -35,6 +35,7 @@ class PluginsController < ApplicationController
         end
       end
     rescue ActiveRecord::RecordInvalid, URI::InvalidURIError => e
+      Rails.logger.info("Failed to create plugin: #{e.message}")
       respond_to do |format|
         format.html do
           render :new
