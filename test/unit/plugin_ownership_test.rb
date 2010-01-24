@@ -24,7 +24,7 @@ class PluginOwnershipTest < ActiveSupport::TestCase
         PluginOwnership.create(:plugin => @plugin, :user => @user)
       end
 
-      should_change("should not create another PluginOwnership", :from => 1, :to => 2) { PluginOwnership.count }
+      should_not_change("PluginOwnership count") { PluginOwnership.count }
     end
 
     context "on duplication of only user_id" do

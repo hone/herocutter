@@ -8,6 +8,9 @@ class PluginOwnership < ActiveRecord::Base
 
   private
   def uniqueness_of_user_id_and_plugin_id
-    !PluginOwnership.find_by_user_id_and_plugin_id(self.user_id, self.plugin_id)
+    if PluginOwnership.exists?(:user_id   => self.user_id,
+                               :plugin_id => self.plugin_id)
+      errors.add_to_base("The user already owns that plugin")
+    end
   end
 end
