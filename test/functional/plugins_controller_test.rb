@@ -29,10 +29,10 @@ class PluginsControllerTest < ActionController::TestCase
 
         should_create :plugin
         should_create :plugin_ownership
+        should_create Delayed::Job
         should_assign_to(:user) { @user }
         should_respond_with :redirect
         should_redirect_to('the show plugin page') { plugin_path(assigns(:plugin)) }
-
         should "have the logged in user own the plugin" do
           assert_equal @user, assigns(:plugin_ownership).user
         end

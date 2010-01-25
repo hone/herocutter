@@ -1,6 +1,7 @@
 class Plugin < ActiveRecord::Base
   has_many :plugin_ownerships
   has_many :owners, :through => :plugin_ownerships, :source => :user
+  has_many :versions
 
   validates_presence_of :name
   validates_uniqueness_of :name
@@ -19,5 +20,20 @@ class Plugin < ActiveRecord::Base
   def self.parse_name(uri)
     uri = URI.parse(uri)
     uri.try(:path).try(:split, '/').try(:last).try(:split, '.').try(:first)
+  end
+
+  def fetch_latest_version
+    begin
+      g = Git.clone(self.uri, self.name, :path => "#{RAILS_ROOT}/tmp/")
+      head = g.object("HEAD")
+      version_name = head.sha
+      version_date = head.date
+      self.versions.create(:name => version_name, :date => version_date)
+      FileUtils.rm_rf(g.dir.path)
+    rescue Git::GitExecuteError
+      Rails.logger.info("ERROR fetching: could not fetch plugin: #{self.name}")
+      nil
+    end
+
   end
 end

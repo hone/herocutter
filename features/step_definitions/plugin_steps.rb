@@ -17,6 +17,10 @@ Then /^I should see the json of "([^\"]+)"$/ do |name|
   assert_equal plugin.to_json, response.body
 end
 
+Then /^I fill in "Git URI" with the git repo$/ do
+  fill_in("Git URI", :with => @git_repo)
+end
+
 When /^I push plugin with git uri "([^\"]+)"$/ do |uri|
   me = User.last
   post plugins_path(:method => 'post', :api_key => me.api_key, :plugin => {:uri => uri })

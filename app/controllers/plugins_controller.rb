@@ -24,6 +24,7 @@ class PluginsController < ApplicationController
         @plugin.save!
         @plugin_ownership = @plugin.plugin_ownerships.build(:user => @user)
         @plugin_ownership.save!
+        @plugin.send_later(:fetch_latest_version)
       end
 
       respond_to do |format|

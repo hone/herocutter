@@ -9,7 +9,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100116071002) do
+ActiveRecord::Schema.define(:version => 20100121034420) do
+
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.string   "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["locked_by"], :name => "index_delayed_jobs_on_locked_by"
 
   create_table "plugin_ownerships", :force => true do |t|
     t.integer  "user_id"
@@ -43,5 +58,13 @@ ActiveRecord::Schema.define(:version => 20100116071002) do
   add_index "users", ["handle"], :name => "index_users_on_handle"
   add_index "users", ["id", "confirmation_token"], :name => "index_users_on_id_and_confirmation_token"
   add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
+
+  create_table "versions", :force => true do |t|
+    t.integer  "plugin_id"
+    t.string   "name"
+    t.datetime "date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

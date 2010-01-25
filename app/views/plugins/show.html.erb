@@ -36,5 +36,20 @@
       <h5>Links</h5>
       <%= link_to 'Git URI', @plugin.uri %>
     </div>
+
+    <div class="versions">
+      <h5>Versions</h5>
+      <ol>
+        <%- @plugin.versions.each do |version| %>
+          <li>
+          <%= version.name[0..6] %>
+          <small><%= version.date.to_date.to_s(:long) %></small>
+          </li>
+        <% end -%>
+        <%- if @plugin.versions.empty? %>
+        <li>Still processing the latest version</li>
+        <% end -%>
+      </ol>
+    </div>
   </div>
 </div>

@@ -1,48 +1,106 @@
 require 'test_helper'
 
 class PluginTest < ActiveSupport::TestCase
-  context "valid factory" do
+  should "be valid with a factory" do
+    assert_valid Factory.build(:plugin)
+  end
+
+  should_have_many :plugin_ownerships
+  should_have_many :owners, :through => :plugin_ownerships
+  should_have_many :versions
+
+  should_validate_presence_of :name, :uri
+  should_not_allow_values_for :name, "New Plugin", "-newplugin", "_newplugin", "newplugin-", "newplugin_", "1", "1newplugin"
+  should_allow_values_for :name, "new_plugin", "new-plugin", "newplugin", "newplugin1", "newplugin0"
+
+  context "with an existing plugin" do
     setup do
-      @plugin = Factory.build(:plugin)
+      Factory(:plugin)
     end
-    subject { @plugin }
 
-    should_have_many :plugin_ownerships
-    should_have_many :owners, :through => :plugin_ownerships
+    should_validate_uniqueness_of :name
+    should_validate_uniqueness_of :uri
+  end
 
-    should_validate_presence_of :name, :uri
-    should_not_allow_values_for :name, "New Plugin", "-newplugin", "_newplugin", "newplugin-", "newplugin_", "1", "1newplugin"
-    should_allow_values_for :name, "new_plugin", "new-plugin", "newplugin", "newplugin1", "newplugin0"
+  context "with a user" do
+    setup do
+      @plugin = Factory(:plugin)
+      @user = Factory(:user)
+    end
 
-    context "with an existing plugin" do
+    should "not be owned by the user if no PluginOwnership" do
+      assert !@plugin.owned_by?(@user)
+    end
+
+    should "be owned by the user if there's a PluginOwnership" do
+      PluginOwnership.create(:plugin => @plugin, :user => @user)
+      assert @plugin.owned_by?(@user)
+    end
+
+    should "can not be owned by nil" do
+      assert !@plugin.owned_by?(nil)
+    end
+
+    context "when cloning a git repo" do
       setup do
-        Factory(:plugin)
-      end
-      subject { @plugin }
+        @sha = "c06086927ad88a5550e6d10fb81c65b5750e82b2"
+        mock(@git_object = Object.new)
+        mock(@head_object = Object.new)
+        mock(@dir_object = Object.new)
 
-      should_validate_uniqueness_of :name
-      should_validate_uniqueness_of :uri
+        stub(Git).clone(@plugin.uri, @plugin.name, anything) { @git_object }
+        stub(@git_object).object("HEAD") { @head_object }
+        stub(@git_object).dir { @dir_object }
+        stub(@dir_object).path { "#{RAILS_ROOT}/tmp/#{@plugin.name}" }
+        stub(@head_object).sha { @sha }
+        stub(@head_object).date { Time.now }
+      end
+
+      context "when there is no new version" do
+        setup do
+          Factory(:version, :plugin => @plugin, :name => @sha)
+        end
+
+        context "on fetch_latest_version" do
+          setup do
+            @plugin.fetch_latest_version
+          end
+
+          should_not_change("Version count") { Version.count }
+          before_should "clean up git clone directory when done" do
+            mock(FileUtils).rm_rf("#{RAILS_ROOT}/tmp/#{@plugin.name}")
+          end
+        end
+      end
+
+      context "when there is a new version" do
+        context "on fetch_latest_version" do
+          setup do
+            @plugin.fetch_latest_version
+          end
+
+          should_create :version
+          before_should "clean up git clone directory when done" do
+            mock(FileUtils).rm_rf("#{RAILS_ROOT}/tmp/#{@plugin.name}")
+          end
+        end
+      end
+
+      context "when the git uri does not exist" do
+        setup do
+          stub(Git).clone(@plugin.uri, @plugin.name, anything) { raise Git::GitExecuteError }
+        end
+
+        context "on fetch_latest_version" do
+          setup do
+            @plugin.fetch_latest_version
+          end
+
+          should_not_change("Version count") { Version.count }
+        end
+      end
     end
 
-    context "with a user" do
-      setup do
-        @plugin.save!
-        @user = Factory(:user)
-      end
-
-      should "not be owned by the user if no PluginOwnership" do
-        assert !@plugin.owned_by?(@user)
-      end
-
-      should "be owned by the user if there's a PluginOwnership" do
-        PluginOwnership.create(:plugin => @plugin, :user => @user)
-        assert @plugin.owned_by?(@user)
-      end
-
-      should "can not be owned by nil" do
-        assert !@plugin.owned_by?(nil)
-      end
-    end
   end
 
   context "class methods" do
