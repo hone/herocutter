@@ -6,6 +6,11 @@ class Version < ActiveRecord::Base
   validates_presence_of :date
   validate :uniqueness_of_name_and_plugin_id
 
+  # display first 7 hash chars like git does
+  def abbreviated_name
+    self.name[0,7]
+  end
+
   private
   def uniqueness_of_name_and_plugin_id
     if Version.exists?(:name      => self.name,

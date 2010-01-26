@@ -31,5 +31,15 @@ class VersionTest < ActiveSupport::TestCase
 
       should_not_change("Version count") { Version.count }
     end
+
+    context "on abbreviated_name" do
+      setup do
+        @existing_version.update_attribute(:name, "c06086927ad88a5550e6d10fb81c65b5750e82b2")
+      end
+
+      should "be the first 7 characters" do
+        assert_equal @existing_version.abbreviated_name, "c060869"
+      end
+    end
   end
 end
