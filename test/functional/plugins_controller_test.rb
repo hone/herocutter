@@ -185,24 +185,62 @@ class PluginsControllerTest < ActionController::TestCase
         @plugin = Factory(:plugin)
       end
 
-      context "on GET show by id" do
+      context "and there's a version" do
         setup do
-          get :show, :id => @plugin.id
+          @versions = Array(1..5).collect { Factory(:version, :plugin => @plugin) }
+          @version = Factory(:version, :plugin => @plugin)
+          @versions << @version
         end
 
-        should_respond_with :success
-        should_render_template :show
-        should_assign_to(:plugin) { @plugin }
+        context "on GET show by id" do
+          setup do
+            get :show, :id => @plugin.id
+          end
+
+          should_respond_with :success
+          should_render_template :show
+          should_assign_to(:plugin) { @plugin }
+          should_assign_to(:latest_version) { @version }
+          should_assign_to(:versions) { @versions[1,5].reverse }
+        end
+
+        context "on GET show by name" do
+          setup do
+            get :show, :id => @plugin.name
+          end
+
+          should_respond_with :success
+          should_render_template :show
+          should_assign_to(:plugin) { @plugin }
+          should_assign_to(:latest_version) { @version }
+          should_assign_to(:versions) { @versions[1,5].reverse }
+        end
       end
 
-      context "on GET show by name" do
-        setup do
-          get :show, :id => @plugin.name
+      context "and there's not a version" do
+        context "on GET show by id" do
+          setup do
+            get :show, :id => @plugin.id
+          end
+
+          should_respond_with :success
+          should_render_template :show
+          should_assign_to(:plugin) { @plugin }
+          should_not_assign_to(:latest_version)
+          should_assign_to(:versions) { Array.new }
         end
 
-        should_respond_with :success
-        should_render_template :show
-        should_assign_to(:plugin) { @plugin }
+        context "on GET show by name" do
+          setup do
+            get :show, :id => @plugin.name
+          end
+
+          should_respond_with :success
+          should_render_template :show
+          should_assign_to(:plugin) { @plugin }
+          should_not_assign_to(:latest_version)
+          should_assign_to(:versions) { Array.new }
+        end
       end
 
       context "on GET show in JSON" do
@@ -212,6 +250,8 @@ class PluginsControllerTest < ActionController::TestCase
 
         should_respond_with :success
         should_assign_to(:plugin) { @plugin }
+        should_not_assign_to(:latest_version)
+        should_not_assign_to(:versions)
         should_respond_with_content_type :json
         should "render json" do
           assert_equal @plugin.to_json, @response.body

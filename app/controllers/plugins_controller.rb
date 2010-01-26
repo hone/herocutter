@@ -52,7 +52,10 @@ class PluginsController < ApplicationController
     find_plugin_by_name_or_id(params[:id])
     if @plugin
       respond_to do |format|
-        format.html
+        format.html do
+          @latest_version = @plugin.versions.by_date(:desc).limited(1).first
+          @versions = @plugin.versions.by_date(:desc).limited(5)
+        end
         format.json do
           render :json => @plugin.to_json
         end

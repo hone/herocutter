@@ -6,6 +6,7 @@ gem 'clearance',  '0.8.4'
 gem 'gravtastic', '2.2.0'
 gem 'formtastic', '0.9.7'
 gem 'git',        '1.2.5'
+gem 'pacecar',    '1.2.0'
 
 only :test do
   gem 'factory_girl',     '1.2.3'

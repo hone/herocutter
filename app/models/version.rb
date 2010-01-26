@@ -1,4 +1,6 @@
 class Version < ActiveRecord::Base
+  include Pacecar
+
   belongs_to :plugin
   
   validates_presence_of :plugin_id
