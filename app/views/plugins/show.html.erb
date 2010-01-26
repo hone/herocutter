@@ -10,7 +10,7 @@
 </div>
 
 <div class="border">
-  <%= clippy(@latest_version.try(:to_install)) %>
+  <%= clippy(install_instructions(@plugin)) %>
   <div class="install">
     <div class="instructions"><strong>install</strong><span><%= install_instructions(@plugin) %></span></div>
   </div>
