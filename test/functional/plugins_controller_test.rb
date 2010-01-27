@@ -202,6 +202,7 @@ class PluginsControllerTest < ActionController::TestCase
           should_assign_to(:plugin) { @plugin }
           should_assign_to(:latest_version) { @version }
           should_assign_to(:versions) { @versions[1,5].reverse }
+          should_not_change("Download count") { Download.count }
         end
 
         context "on GET show by name" do
@@ -214,6 +215,23 @@ class PluginsControllerTest < ActionController::TestCase
           should_assign_to(:plugin) { @plugin }
           should_assign_to(:latest_version) { @version }
           should_assign_to(:versions) { @versions[1,5].reverse }
+          should_not_change("Download count") { Download.count }
+        end
+
+        context "on GET show in JSON" do
+          setup do
+            get :show, :id => @plugin.id, :format => 'json'
+          end
+
+          should_respond_with :success
+          should_assign_to(:plugin) { @plugin }
+          should_assign_to(:latest_version) { @version }
+          should_respond_with_content_type :json
+          should_create :download
+          should "render json" do
+            @plugin.reload
+            assert_equal @plugin.to_json, @response.body
+          end
         end
       end
 
@@ -228,6 +246,7 @@ class PluginsControllerTest < ActionController::TestCase
           should_assign_to(:plugin) { @plugin }
           should_not_assign_to(:latest_version)
           should_assign_to(:versions) { Array.new }
+          should_not_change("Download count") { Download.count }
         end
 
         context "on GET show by name" do
@@ -240,6 +259,7 @@ class PluginsControllerTest < ActionController::TestCase
           should_assign_to(:plugin) { @plugin }
           should_not_assign_to(:latest_version)
           should_assign_to(:versions) { Array.new }
+          should_not_change("Download count") { Download.count }
         end
       end
 
@@ -253,6 +273,7 @@ class PluginsControllerTest < ActionController::TestCase
         should_not_assign_to(:latest_version)
         should_not_assign_to(:versions)
         should_respond_with_content_type :json
+        should_not_change("Download count") { Download.count }
         should "render json" do
           assert_equal @plugin.to_json, @response.body
         end

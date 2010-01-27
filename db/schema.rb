@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100121034420) do
+ActiveRecord::Schema.define(:version => 20100126063629) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -26,6 +26,12 @@ ActiveRecord::Schema.define(:version => 20100121034420) do
 
   add_index "delayed_jobs", ["locked_by"], :name => "index_delayed_jobs_on_locked_by"
 
+  create_table "downloads", :force => true do |t|
+    t.integer  "version_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "plugin_ownerships", :force => true do |t|
     t.integer  "user_id"
     t.integer  "plugin_id"
@@ -39,6 +45,7 @@ ActiveRecord::Schema.define(:version => 20100121034420) do
     t.string   "uri"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "downloads_count", :default => 0
   end
 
   create_table "users", :force => true do |t|
@@ -65,6 +72,7 @@ ActiveRecord::Schema.define(:version => 20100121034420) do
     t.datetime "date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "downloads_count", :default => 0
   end
 
 end

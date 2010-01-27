@@ -8,6 +8,12 @@ Given /^a plugin "([^\"]+)" exists$/ do |name|
   PluginOwnership.create!(:plugin => plugin, :user => Factory(:email_confirmed_user))
 end
 
+Given /^a plugin "([^\"]+)" exists with the latest version$/ do |name|
+  plugin = Factory(:plugin, :name => name, :uri => @git_repo)
+  plugin.fetch_latest_version
+  PluginOwnership.create!(:plugin => plugin, :user => Factory(:email_confirmed_user))
+end
+
 Then /^I should see the link source "([^\"]+)"$/ do |uri|
   assert_select "a[href=#{uri}]"
 end

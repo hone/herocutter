@@ -51,12 +51,16 @@ class PluginsController < ApplicationController
   def show
     find_plugin_by_name_or_id(params[:id])
     if @plugin
+      @latest_version = @plugin.versions.by_date(:desc).limited(1).first
       respond_to do |format|
         format.html do
-          @latest_version = @plugin.versions.by_date(:desc).limited(1).first
           @versions = @plugin.versions.by_date(:desc).limited(5)
         end
         format.json do
+          if @latest_version
+            @latest_version.downloads.create
+          end
+          @plugin.reload # update download count for json
           render :json => @plugin.to_json
         end
       end

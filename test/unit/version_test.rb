@@ -6,6 +6,7 @@ class VersionTest < ActiveSupport::TestCase
   end
 
   should_belong_to :plugin
+  should_have_many :downloads
   should_validate_presence_of :name, :plugin_id, :date
 
   context "with an existing version" do
@@ -40,6 +41,15 @@ class VersionTest < ActiveSupport::TestCase
       should "be the first 7 characters" do
         assert_equal @existing_version.abbreviated_name, "c060869"
       end
+    end
+
+    context "with a new download" do
+      setup do
+        Factory(:download, :version => @existing_version)
+        @existing_version.reload
+      end
+
+      should_change("downloads_count", :from => 0, :to => 1) { @existing_version.downloads_count }
     end
   end
 end

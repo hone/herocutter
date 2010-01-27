@@ -4,9 +4,13 @@ Feature: Install Plugin
   Should be able to fetch plugin information for the gem
 
   Scenario: User should be able to get plugin information using plugin name
-    Given a plugin "new_plugin" exists
+    Given a plugin git repo exists
+    And a plugin "new_plugin" exists with the latest version
     When I go to the plugin page by name for "new_plugin"
     Then I should see the json of "new_plugin"
+    When I go to the plugin page for "new_plugin"
+    Then I should see "1 total downloads"
+    And I should see "1 for this version"
 
   Scenario: User should be able to share their plugin online
     Given I am signed up and confirmed as "email@person.com/password"

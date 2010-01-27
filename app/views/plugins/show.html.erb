@@ -25,10 +25,10 @@
       </div>
 
       <div class="downloads">
-        <strong><%= number_with_delimiter(0) %></strong> total downloads
+        <strong><%= number_with_delimiter(@plugin.try(:downloads_count) || 0) %></strong> total downloads
       </div>
       <div class="downloads">
-        <strong><%= number_with_delimiter(0) %></strong> for this version
+        <strong><%= number_with_delimiter(@latest_version.try(:downloads_count) || 0) %></strong> for this version
       </div>
     </div>
 

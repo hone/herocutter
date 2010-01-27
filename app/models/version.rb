@@ -2,6 +2,7 @@ class Version < ActiveRecord::Base
   include Pacecar
 
   belongs_to :plugin
+  has_many :downloads
   
   validates_presence_of :plugin_id
   validates_presence_of :name
