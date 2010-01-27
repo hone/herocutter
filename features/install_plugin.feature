@@ -11,6 +11,8 @@ Feature: Install Plugin
     When I go to the plugin page for "new_plugin"
     Then I should see "1 total downloads"
     And I should see "1 for this version"
+    When I follow "all plugins"
+    Then I should see /1\s*downloads/
 
   Scenario: User should be able to share their plugin online
     Given I am signed up and confirmed as "email@person.com/password"
