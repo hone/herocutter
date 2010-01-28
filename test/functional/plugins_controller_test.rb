@@ -38,6 +38,26 @@ class PluginsControllerTest < ActionController::TestCase
         end
       end
 
+      context "with a plugin that has a prefix 'heroku_'" do
+        setup do
+          @plugin_params[:name] = "heroku_new_plugin"
+          post :create, :plugin => @plugin_params
+        end
+
+        should_create :plugin
+        should_create :plugin_ownership
+        should_create Delayed::Job
+        should_assign_to(:user) { @user }
+        should_respond_with :redirect
+        should_redirect_to('the show plugin page') { plugin_path(assigns(:plugin)) }
+        should "have the logged in user own the plugin" do
+          assert_equal @user, assigns(:plugin_ownership).user
+        end
+        should "have the name new_plugin" do
+          assert_equal "new_plugin", assigns(:plugin).name
+        end
+      end
+
       context "with problems" do
         context "with URI parse" do
           setup do

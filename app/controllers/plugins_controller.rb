@@ -19,6 +19,9 @@ class PluginsController < ApplicationController
       if @plugin.name.blank?
         @plugin.name = Plugin.parse_name(@plugin.uri)
       end
+      if /^heroku_/.match(@plugin.name)
+        @plugin.name.sub!(/^heroku_/, '')
+      end
 
       ActiveRecord::Base.transaction do
         @plugin.save!
