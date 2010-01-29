@@ -52,4 +52,17 @@ class VersionTest < ActiveSupport::TestCase
       should_change("downloads_count", :from => 0, :to => 1) { @existing_version.downloads_count }
     end
   end
+
+  context "when there are some version" do
+    setup do
+      @versions = Array(1..6).collect { Factory(:version) }
+      @latest = Factory(:version, :plugin => @versions.last.plugin)
+    end
+
+    context "on Version.recently_updated" do
+      should "return the five most recently updated plugins" do
+        assert_equal((@versions[1, 4] + [@latest]).reverse, Version.recently_updated)
+      end
+    end
+  end
 end

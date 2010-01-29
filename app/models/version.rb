@@ -14,6 +14,21 @@ class Version < ActiveRecord::Base
     self.name[0,7]
   end
 
+  def self.recently_updated
+    sql = <<SQL
+SELECT *
+FROM (
+  SELECT DISTINCT ON (plugin_id) *
+  FROM versions
+  ORDER BY plugin_id, date DESC
+) AS t1
+ORDER BY t1.date DESC
+LIMIT 5
+SQL
+
+    Version.find_by_sql(sql)
+  end
+
   private
   def uniqueness_of_name_and_plugin_id
     if Version.exists?(:name      => self.name,
