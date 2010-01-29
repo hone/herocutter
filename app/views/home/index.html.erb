@@ -10,30 +10,11 @@
 <% end %>
 
 <div class="border">
-  <div class="background">
-    <div class="learn">
-      <h3>learn</h3>
-      <dl>
-        <dt><%= link_to "Install RubyGems 1.3.5", page_url("download") %></dt>
-        <dd>Ruby's premier packaging system</dd>
-        <dt><%= link_to "Browse the Docs", "http://docs.rubygems.org" %></dt>
-        <dd>The comprehensive guide on RubyGems</dd>
-        <dt><%= link_to "Gem Specification", "http://docs.rubygems.org/read/chapter/20" %></dt>
-        <dd>Your gem's interface to the world</dd>
-      </dl>
-    </div>
-    <div class="share">
-      <h3>share</h3>
-      <dl>
-        <dt><code>gem install gemcutter</code></dt>
-        <dd>Provides plugins to share your code</dd>
-        <dt><code>gem build foo.gemspec</code></dt>
-        <dd>Build your gem</dd>
-        <dt><code>gem push foo-1.0.0.gem</code></dt>
-        <dd>Deploy your gem instantly</dd>
-      </dl>
-    </div>
-  </div>
+  <ol class="instructions">
+    <li id="ready"><strong>ready</strong><span>heroku plugins:install git://github.com/hone/heroku_herocutter.git</span></li>
+    <li id="set"><strong>set</strong><span>there is no set</span></li>
+    <li id="go"><strong>go</strong><span>heroku plugins:install colorize_console</span></li>
+  </ol>
 </div>
 
 <p class="pitch">

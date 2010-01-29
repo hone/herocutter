@@ -376,20 +376,20 @@ body {
   text-transform: lowercase;
   font-variant: small-caps;
   font-weight: bold;
-  font-size: 1.1em;
-  width: 100px;
+  font-size: 0.8em;
+  width: 65px;
   text-align: right;
-  padding-left: 10px;
-  padding-right: 50px;
+  padding-left: 0px;
+  padding-right: 35px;
   float: left;
   background: url('/images/arrow.png') no-repeat 85% 52%;
 }
 
 .main .info ol.instructions li span {
   font-family: Monaco, Consolas, "Courier New", monospace;
-  margin-left: 0.5em;
+  margin-left: 0.1em;
   float: left;
-  font-size: 1em;
+  font-size: 0.60em;
 }
 
 .main .info .border {
