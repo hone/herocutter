@@ -63,5 +63,41 @@ class Api::V1::PluginsControllerTest < ActionController::TestCase
         should_render_template :no_plugin
       end
     end
+
+    context "on POST create" do
+      setup do
+        post :create, :format => 'json'
+      end
+
+      should_respond_with :success
+      should_respond_with_content_type :json
+      should_not_change("Plugin count") { Plugin.count }
+      should_not_change("PluginOwnership count") { PluginOwnership.count }
+      should_render_template :could_not_create_plugin
+    end
+  end
+
+  context "when using an API key" do
+    setup do
+      @user = Factory(:user)
+      @request.env["HTTP_AUTHORIZATION"] = @user.api_key
+    end
+
+    context "on PUT create in JSON" do
+      setup do
+        post :create, :plugin => {:uri => 'git://github.com/new_plugin.git'}, :format => 'json'
+      end
+
+      should_respond_with :success
+      should_respond_with_content_type :json
+      should_create :plugin
+      should_create :plugin_ownership
+      before_should "not verify authenticity token" do
+        dont_allow(@controller).verify_authenticity_token
+      end
+      should "render plugin as json object" do
+        assert_equal assigns(:plugin).to_json, @response.body
+      end
+    end
   end
 end

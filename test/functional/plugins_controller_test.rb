@@ -30,7 +30,6 @@ class PluginsControllerTest < ActionController::TestCase
         should_create :plugin
         should_create :plugin_ownership
         should_create Delayed::Job
-        should_assign_to(:user) { @user }
         should_respond_with :redirect
         should_redirect_to('the show plugin page') { plugin_path(assigns(:plugin)) }
         should "have the logged in user own the plugin" do
@@ -47,7 +46,6 @@ class PluginsControllerTest < ActionController::TestCase
         should_create :plugin
         should_create :plugin_ownership
         should_create Delayed::Job
-        should_assign_to(:user) { @user }
         should_respond_with :redirect
         should_redirect_to('the show plugin page') { plugin_path(assigns(:plugin)) }
         should "have the logged in user own the plugin" do
@@ -96,19 +94,6 @@ class PluginsControllerTest < ActionController::TestCase
           should_assign_to :plugin_ownership, :class => PluginOwnership
           should_not_change("Plugin count") { Plugin.count }
           should_not_change("PluginOwnership count") { PluginOwnership.count }
-        end
-
-        context "using JSON" do
-          setup do
-            stub.instance_of(Plugin).save! { raise ActiveRecord::RecordInvalid.new(Plugin.new) }
-            post :create, :plugin => @plugin_params, :format => 'json'
-          end
-
-          should_respond_with :success
-          should_respond_with_content_type :json
-          should_not_change("Plugin count") { Plugin.count }
-          should_not_change("PluginOwnership count") { PluginOwnership.count }
-          should_render_template :could_not_create_plugin
         end
       end
     end
@@ -188,18 +173,6 @@ class PluginsControllerTest < ActionController::TestCase
       should_redirect_to('the hompage') { root_url }
     end
 
-    context "on POST create with json" do
-      setup do
-        post :create, :format => 'json'
-      end
-
-      should_respond_with :success
-      should_respond_with_content_type :json
-      should_not_change("Plugin count") { Plugin.count }
-      should_not_change("PluginOwnership count") { PluginOwnership.count }
-      should_render_template :could_not_create_plugin
-    end
-
     context "when plugin exists" do
       setup do
         @plugin = Factory(:plugin)
@@ -271,29 +244,6 @@ class PluginsControllerTest < ActionController::TestCase
 
       should_respond_with :redirect
       should_redirect_to('the hompage') { root_url }
-    end
-
-    context "but using an api key" do
-      setup do
-        @user = Factory(:user)
-      end
-
-      context "on PUT create in JSON" do
-        setup do
-          post :create, :api_key => @user.api_key, :plugin => {:uri => 'git://github.com/new_plugin.git'}, :format => 'json'
-        end
-
-        should_respond_with :success
-        should_respond_with_content_type :json
-        should_create :plugin
-        should_create :plugin_ownership
-        before_should "not verify authenticity token" do
-          dont_allow(@controller).verify_authenticity_token
-        end
-        should "render plugin as json object" do
-          assert_equal assigns(:plugin).to_json, @response.body
-        end
-      end
     end
   end
 end

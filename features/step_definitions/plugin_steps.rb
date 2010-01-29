@@ -29,5 +29,6 @@ end
 
 When /^I push plugin with git uri "([^\"]+)"$/ do |uri|
   me = User.last
-  post plugins_path(:method => 'post', :api_key => me.api_key, :plugin => {:uri => uri })
+  header("Authorization", me.api_key)
+  visit api_v1_plugins_path(:plugin => {:uri => uri }, :format => 'json'), :post
 end

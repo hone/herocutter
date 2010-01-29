@@ -40,7 +40,7 @@ ActionController::Routing::Routes.draw do |map|
     api.namespace :v1 do |v1|
       v1.resources :plugins,
         :format => "json",
-        :only   => [:show]
+        :only   => [:show, :create]
     end
   end
 
