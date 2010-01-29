@@ -1,9 +1,9 @@
 class Plugin < ActiveRecord::Base
   include Pacecar
 
-  has_many :plugin_ownerships
+  has_many :plugin_ownerships, :dependent => :destroy
   has_many :owners, :through => :plugin_ownerships, :source => :user
-  has_many :versions
+  has_many :versions, :dependent => :destroy
 
   validates_presence_of :name
   validates_uniqueness_of :name
