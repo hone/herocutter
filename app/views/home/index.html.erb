@@ -26,9 +26,9 @@
   <div class="grid_3" id="new_gems">
     <strong>New Plugins</strong>
     <ol>
-      <% @latest.each do |rubygem| %>
+      <% @latest.each do |plugin| %>
         <li>
-          <%= link_to rubygem, rubygem, :title => rubygem.versions.latest.summary %>
+          <%= link_to plugin.name, plugin_path(plugin), :title => plugin.description %>
         </li>
       <% end %>
     </ol>
@@ -36,9 +36,9 @@
   <div class="grid_3" id="most_downloaded">
     <strong>Most Downloaded</strong>
     <ol>
-      <% @downloaded.each do |rubygem| %>
+      <% @downloaded.each do |plugin| %>
         <li>
-          <%= link_to "#{rubygem.name} (#{rubygem.downloads})", rubygem, :title => rubygem.versions.latest.summary %>
+          <%= link_to "#{plugin.name} (#{plugin.downloads_count})", plugin_path(plugin), :title => plugin.description %>
         </li>
       <% end %>
     </ol>
@@ -48,7 +48,7 @@
     <ol>
       <% @updated.each do |version| %>
         <li>
-          <%= link_to version.to_title, version.rubygem, :title => version.summary %>
+          <%= link_to "#{version.plugin.name} (#{version.name})", plugin_path(version.plugin), :title => version.plugin.description %>
         </li>
       <% end %>
     </ol>
