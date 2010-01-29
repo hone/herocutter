@@ -212,7 +212,7 @@ class PluginsControllerTest < ActionController::TestCase
           @versions << @version
         end
 
-        context "on GET show by id" do
+        context "on GET show" do
           setup do
             get :show, :id => @plugin.id
           end
@@ -223,40 +223,11 @@ class PluginsControllerTest < ActionController::TestCase
           should_assign_to(:latest_version) { @version }
           should_assign_to(:versions) { @versions[1,5].reverse }
           should_not_change("Download count") { Download.count }
-        end
-
-        context "on GET show by name" do
-          setup do
-            get :show, :id => @plugin.name
-          end
-
-          should_respond_with :success
-          should_render_template :show
-          should_assign_to(:plugin) { @plugin }
-          should_assign_to(:latest_version) { @version }
-          should_assign_to(:versions) { @versions[1,5].reverse }
-          should_not_change("Download count") { Download.count }
-        end
-
-        context "on GET show in JSON" do
-          setup do
-            get :show, :id => @plugin.id, :format => 'json'
-          end
-
-          should_respond_with :success
-          should_assign_to(:plugin) { @plugin }
-          should_assign_to(:latest_version) { @version }
-          should_respond_with_content_type :json
-          should_create :download
-          should "render json" do
-            @plugin.reload
-            assert_equal @plugin.to_json, @response.body
-          end
         end
       end
 
       context "and there's not a version" do
-        context "on GET show by id" do
+        context "on GET show" do
           setup do
             get :show, :id => @plugin.id
           end
@@ -267,69 +238,18 @@ class PluginsControllerTest < ActionController::TestCase
           should_not_assign_to(:latest_version)
           should_assign_to(:versions) { Array.new }
           should_not_change("Download count") { Download.count }
-        end
-
-        context "on GET show by name" do
-          setup do
-            get :show, :id => @plugin.name
-          end
-
-          should_respond_with :success
-          should_render_template :show
-          should_assign_to(:plugin) { @plugin }
-          should_not_assign_to(:latest_version)
-          should_assign_to(:versions) { Array.new }
-          should_not_change("Download count") { Download.count }
-        end
-      end
-
-      context "on GET show in JSON" do
-        setup do
-          get :show, :id => @plugin.id, :format => 'json'
-        end
-
-        should_respond_with :success
-        should_assign_to(:plugin) { @plugin }
-        should_not_assign_to(:latest_version)
-        should_not_assign_to(:versions)
-        should_respond_with_content_type :json
-        should_not_change("Download count") { Download.count }
-        should "render json" do
-          assert_equal @plugin.to_json, @response.body
         end
       end
     end
 
     context "when plugin doesn't exist" do
-      context "on GET show by id" do
+      context "on GET show" do
         setup do
           get :show, :id => 5
         end
 
         should_respond_with :success
         should_render_template :no_plugin_found
-      end
-
-      context "on GET show by name" do
-        setup do
-          get :show, :id => "foo"
-        end
-
-        should_respond_with :success
-        should_render_template :no_plugin_found
-      end
-
-      context "on GET show in JSON" do
-        setup do
-          get :show, :id => 5, :format => 'json'
-        end
-
-        should_respond_with :success
-        should_render_template :no_plugin_found
-        should_respond_with_content_type :json
-        should "be correct JSON" do
-          assert JSON.parse(@response.body)
-        end
       end
     end
 

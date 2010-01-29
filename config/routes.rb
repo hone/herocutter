@@ -35,6 +35,15 @@ ActionController::Routing::Routes.draw do |map|
 
   # See how all your routes lay out with "rake routes"
 
+  # API v1
+  map.namespace :api do |api|
+    api.namespace :v1 do |v1|
+      v1.resources :plugins,
+        :format => "json",
+        :only   => [:show]
+    end
+  end
+
   map.resource :profile,
     :only   => [:show],
     :member => {:reset_api_key => :put }

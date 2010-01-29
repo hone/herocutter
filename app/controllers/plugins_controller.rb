@@ -3,7 +3,7 @@ class PluginsController < ApplicationController
   before_filter :redirect_to_root, :unless => :signed_in?, :only => [:new, :edit, :update]
   # rails won't allow you to have two before_filters with the same method name
   before_filter :redirect_to_root_for_create, :only => [:create]
-  before_filter :find_plugin, :only => [:edit, :update]
+  before_filter :find_plugin, :only => [:show, :edit, :update]
 
   def index
     @plugins = Plugin.find(:all, :order => "name ASC")
@@ -52,21 +52,9 @@ class PluginsController < ApplicationController
   end
 
   def show
-    find_plugin_by_name_or_id(params[:id])
     if @plugin
       @latest_version = @plugin.versions.by_date(:desc).limited(1).first
-      respond_to do |format|
-        format.html do
-          @versions = @plugin.versions.by_date(:desc).limited(5)
-        end
-        format.json do
-          if @latest_version
-            @latest_version.downloads.create
-          end
-          @plugin.reload # update download count for json
-          render :json => @plugin.to_json
-        end
-      end
+      @versions = @plugin.versions.by_date(:desc).limited(5)
     else
       render :no_plugin_found
     end
@@ -106,9 +94,5 @@ class PluginsController < ApplicationController
     if not signed_in_or_has_api_key? and not request.format.to_sym == :json
       redirect_to_root
     end
-  end
-
-  def find_plugin_by_name_or_id(id)
-    @plugin = (Plugin.find_by_name(params[:id]) or Plugin.find_by_id(params[:id].to_i))
   end
 end

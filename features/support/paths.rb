@@ -20,7 +20,7 @@ module NavigationHelpers
       plugin = Plugin.find_by_name!($1)
       plugin_path(plugin)
     when /the plugin page by name for "([^\"]+)"/
-      plugin_path($1, :format => 'json')
+      api_v1_plugin_path($1, :format => 'json')
     when /the profile page/
       profile_path
     else
