@@ -14,13 +14,13 @@ plugins:push [&lt;git_uri&gt;]      # push plugin up to herocutter
 <h4><a name="install">Install</a></h4>
 <p>To install a plugin, just pass a plugin name to <code>heroku plugins:install</code>:</p>
 
-<p><code>heroku plugins:install colorize_console</code></p>
+<p><pre><code>heroku plugins:install colorize_console</code></pre></p>
 
 <h4><a name="push">Push</a></h4>
 <p>To push a plugin up remotely, you need to sign up and verify your herocutter account.  On the <a href="/profile">profile page</a> you'll find your API Key, you'll need to put this in your ~/.heroku/herocutter file in the format described on that page.  Now you can cd into the git repo of your heroku plugin, and do a <code>plugins:push</code>:
 
-<p><code>heroku plugins:push</code></p>
+<p><pre><code>heroku plugins:push</code></pre></p>
 
 <p>By default, herocutter will pull the git uri from origin and use that.  If a GitHub uri is detected, it will automatically push up the read only uri.  The name will be based off the uri.  The prefix 'heroku_' is removed if it is there.  You can also override the uri by passing it into the push command:</p>
 
-<p><code>heroku plugins:push git://somesite.com/some_plugin.git</code></p>
+<p><pre><code>heroku plugins:push git://somesite.com/some_plugin.git</code></pre></p>
