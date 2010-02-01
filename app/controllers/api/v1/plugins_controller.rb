@@ -4,6 +4,13 @@ class Api::V1::PluginsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => [:create]
   before_filter :authenticate_with_api_key, :only => [:create]
 
+  # list
+  def index
+    list_plugins
+
+    render :json => @plugins.to_json
+  end
+
   # install
   def show
     @plugin = Plugin.find_by_name(params[:id])

@@ -24,5 +24,8 @@ Feature: Install Plugin
     And I should see the link source "git://github.com/new_plugin.git"
 
   Scenario: User should be able to see a list of plugins
-    Given I am signed up and confirmed as "email@person.com/password"
+    Given a plugin "new_plugin" exists
+    And a plugin "second_plugin" exists
     When I go to the api plugins listing page
+    Then I should see "new_plugin"
+    And I should see "second_plugin"

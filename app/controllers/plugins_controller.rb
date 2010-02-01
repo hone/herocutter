@@ -6,7 +6,7 @@ class PluginsController < ApplicationController
   before_filter :find_plugin, :only => [:show, :edit, :update]
 
   def index
-    @plugins = Plugin.find(:all, :order => "name ASC")
+    list_plugins
   end
 
   def new

@@ -47,6 +47,19 @@ class Api::V1::PluginsControllerTest < ActionController::TestCase
           end
         end
       end
+
+      context "on GET index" do
+        setup do
+          get :index, :format => "json"
+        end
+
+        should_respond_with :success
+        should_assign_to(:plugins) { [@plugin] }
+        should_respond_with_content_type :json
+        should "be parseable json" do
+          assert_equal [@plugin].to_json, @response.body
+        end
+      end
     end
 
     context "and the plugin does not exist" do

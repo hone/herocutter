@@ -14,6 +14,8 @@ module NavigationHelpers
     # Add more page name => path mappings here
     when /the plugins listing page/
       plugins_path
+    when /the api plugins listing page/
+      api_v1_plugins_path(:format => 'json')
     when /the new plugin page/
       new_plugin_path
     when /the plugin page for "([^\"]+)"/

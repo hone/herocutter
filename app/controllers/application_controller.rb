@@ -15,6 +15,10 @@ class ApplicationController < ActionController::Base
 end
 
 module PluginsCommon
+  def list_plugins
+    @plugins = Plugin.find(:all, :order => "name ASC")
+  end
+
   # common code for create plugin
   def create_plugin
     @plugin = Plugin.new(params[:plugin])
