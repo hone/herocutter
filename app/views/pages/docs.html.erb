@@ -24,3 +24,18 @@ plugins:push [&lt;git_uri&gt;]      # push plugin up to herocutter
 <p>By default, herocutter will pull the git uri from origin and use that.  If a GitHub uri is detected, it will automatically push up the read only uri.  The name will be based off the uri.  The prefix 'heroku_' is removed if it is there.  You can also override the uri by passing it into the push command:</p>
 
 <p><pre><code>heroku plugins:push git://somesite.com/some_plugin.git</code></pre></p>
+
+<h4><a name="list">List</a></h4>
+<p>To see a list of available plugins from herocutter run <code>heroku plugins:list -r</code>.</p>
+
+<p><pre><code>$ heroku plugins:list -r
+
+*** REMOTE PLUGINS ***
+
+colorize_console
+herocutter
+switch_command
+tab_complete_console
+</code></pre></p>
+
+<p><code>heroku plugins:list</code> without the <code>-r</code> will return the list of locally installed ones.</p>
