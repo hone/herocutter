@@ -15,7 +15,7 @@ only :test do
   gem 'webrat',           '0.6.0'
   gem 'database_cleaner', '0.4.2'
   gem 'shoulda',          '2.10.2'
-  gem 'rr',		          '0.10.5'
+  gem 'rr',               '0.10.5'
   gem 'redgreen'
 end
 
