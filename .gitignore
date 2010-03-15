@@ -4,3 +4,5 @@ log/*
 rerun.txt
 vendor/bundler_gems/*
 bin/*
+Gemfile.lock
+.bundle

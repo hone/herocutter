@@ -1,14 +1,16 @@
-bundle_path "vendor/bundler_gems"
+source "http://gemcutter.org"
 
-gem 'rails',      '2.3.5'
+gem 'rails',      '2.3.5', :require => nil
 gem 'postgres'
 gem 'clearance',  '0.8.4'
 gem 'gravtastic', '2.2.0'
 gem 'formtastic', '0.9.7'
 gem 'git',        '1.2.5'
 gem 'pacecar',    '1.2.0'
+gem 'bundler',    '0.9.11'
+gem 'thin',       '1.2.7'
 
-only :test do
+group :test do
   gem 'factory_girl',     '1.2.3'
   gem 'cucumber',         '0.6.1'
   gem 'cucumber-rails',   '0.2.3'
@@ -19,7 +21,7 @@ only :test do
   gem 'redgreen'
 end
 
-only :development do
+group :development do
   gem 'factory_girl',     '1.2.3'
   gem 'n',                '0.1.0'
 end
