@@ -14,6 +14,10 @@ Feature: Install Plugin
     When I follow "all plugins"
     Then I should see /1\s*downloads/
 
+  Scenario: User tries to fetch plugin information for a plugin that doesn't exist
+    When I go to the api plugin page for "nonexistant_plugin"
+    Then I should see a json error page
+
   Scenario: User should be able to share their plugin online
     Given I am signed up and confirmed as "email@person.com/password"
     When I push plugin with git uri "git://github.com/new_plugin.git"
