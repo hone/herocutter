@@ -7,7 +7,6 @@ gem 'gravtastic', '2.2.0'
 gem 'formtastic', '0.9.7'
 gem 'git',        '1.2.5'
 gem 'pacecar',    '1.2.0'
-gem 'bundler',    '0.9.11'
 gem 'thin',       '1.2.7'
 
 group :test do
