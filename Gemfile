@@ -4,7 +4,6 @@ gem 'rails',      '2.3.5', :require => nil
 gem 'postgres'
 gem 'clearance',  '0.8.4'
 gem 'gravtastic', '2.2.0'
-gem 'formtastic', '0.9.7'
 gem 'git',        '1.2.5'
 gem 'pacecar',    '1.2.0'
 gem 'thin',       '1.2.7'
